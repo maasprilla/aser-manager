@@ -41,5 +41,6 @@
 		<td><?php echo $produit['GroupeComptable']['name']; ?>&nbsp;</td>
 		<?php endif; ?>
 		<td><?php echo $produit['Produit']['min']; ?>&nbsp;</td>
+		<td><?php echo $produit['Produit']['description']; ?>&nbsp;</td>
 		<td><?php echo $produit['Produit']['actif']; ?>&nbsp;</td>
 	</tr>

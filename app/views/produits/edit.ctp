@@ -32,6 +32,7 @@
 			if(Configure::read('aser.comptabilite'))
 				echo $this->Form->input('groupe_comptable_id');
 			echo $this->Form->input('min',array('label'=>'Stock Minimale'));
+			echo $this->Form->input('description',array('type'=>'text'));
 			echo $this->Form->input('actif',array('options'=>array('oui'=>'oui','non'=>'non'),'id'=>'actif'));
 			echo $this->Form->input('old_name',array('type'=>'hidden'));
 	?>

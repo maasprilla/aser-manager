@@ -28,6 +28,7 @@
 			<th>Groupe Comptable</th>
 		<?php endif;?>
 		<th>Stock Min</th>
+		<th>Description</th>
 		<th>Actions</th>
 	</tr>
 	<?php for($i=0;$i<1;$i++): ?>
@@ -74,6 +75,7 @@
 			<td><?php echo $this->Form->input('groupe_comptable_id',array('label'=>'','options'=>$groupeComptables));?></td>
 		<?php endif; ?>
 		<td><?php echo $this->Form->input('min',array('label'=>'','class'=>'nullable','value'=>10));?></td>
+		<td><?php echo $this->Form->input('description',array('label'=>''));?></td>
 		<?php echo $this->Form->input('actif',array('type'=>'hidden','value'=>'oui'));?>
 		<td><input type="submit" value="Envoyer"/></td>
 		</form>
@@ -114,6 +116,7 @@
 			<th><?php echo $this->Paginator->sort('groupe_comptable_id');?></th>
 		<?php endif; ?>
 			<th><?php echo $this->Paginator->sort('min');?></th>
+			<th><?php echo $this->Paginator->sort('description');?></th>
 			<th><?php echo $this->Paginator->sort('actif');?></th>
 		</tr>
 	<?php

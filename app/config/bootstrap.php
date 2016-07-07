@@ -54,12 +54,12 @@
   * 
   */
 	Configure::write('aser',array(
-								'hotel'=>1, //activer seulement s'ils ont besion du module d'hebergement
+								'hotel'=>0, //activer seulement s'ils ont besion du module d'hebergement
 								 'POS'=>1, // Point of Sale, a activer s'ils ont besion du module de point de vente 
 								 'services'=>1, //a activer seulement pour les hotels
 								 'sama'=>0,//sama café mode when serveur get access to computer,
 								 'bon'=>1, //impression des bons par l'ordinateur
-								 'magasin'=>0, // a activer si c'est pas un restaurant
+								 'magasin'=>1, // a activer si c'est pas un restaurant
 								 'connexion'=>0, // a activer s'ils desirent une synchronisation entre le point de vente et le stock
 								 'multi_resto'=>0, //a activer pour les restaurants avec plusieurs point de vente
 								 'company_info'=>1, // toujours activer
@@ -68,12 +68,12 @@
 								 'beneficiaires'=>0, // a activer si l'entreprise accepte que des clients prennent des produits sur le compte des autres 
 								 'detailed_ben'=>0, // a activer pour les pharmacies qui travaillent les mutuelles d'assurance 
 								 'extras'=>0, //toujours desactiver
-								 'conference'=>1, //a activer pour le module de gestion des salles de conference
+								 'conference'=>0, //a activer pour le module de gestion des salles de conference
 								 'tva'=>1, // a activer si l'entreprise est soumise a la tva et mettre son taux.
 								 'name'=>'aser', // nom du dossier qui contient le logiciel ,
 								 'upload'=>0, // a activer pour ceux qui ulitise la version touchscreen du point de vente
 								 'swipe'=>0, // a activer si on ulitilse les cartes magnetiques pour la connexion
-								 'touchscreen'=>1, // a activer pour ceux qui ulitise la version touchscreen du point de vente
+								 'touchscreen'=>0, // a activer pour ceux qui ulitise la version touchscreen du point de vente
 								 'alerts'=>1, //  a activer pour les pharmacies ou autres entreprises qui desirent des alertes
 								 'tresorerie'=>1, // a activer s'ils utilisent le module tresorerie
 								 'stock'=>1,  // a activer s'ils utilisent le module stock
@@ -88,7 +88,7 @@
 								 'billetage'=>0,
 								 'caissier_serveur'=>0, // a activer les serveurs jouent aussi le role des caissiers
 								 'tables'=>22, // le nombre total de table dont dispose leur restaurant
-								 'cloturer'=>0, // if on cloture automatique le journal at the beginning of each day
+								 'cloturer'=>1, // if on cloture automatique le journal at the beginning of each day
 								 'multi_pv'=>0, // dsi le produit peut avoir plusieurs prix differents,
 								 'pharmacie'=>0, // si l'entreprise est une pharmacie active les batch number & date d'expiration
 								 'default_currency'=>'BIF',
@@ -118,7 +118,7 @@
 								 'caisse_interdite'=>0,
 								 'ebenezer'=>0, //if on enables features of pharmacie eben ezer
 								 'gouvernance'=>1, //if on enables features related to housekeeping
-								 'groupes_on_index'=>0, //if on enables the grouping of products on the vente index
+								 'groupes_on_index'=>1, //if on enables the grouping of products on the vente index
 								 'disable_transfer'=>1, //to disable transfer of bills from on journal to another.
 								 'deny_caishier_to_make_credit'=>1,
 								 'disable_nembeteplus'=>0, //when managers want to force the closing of the report.
@@ -127,7 +127,8 @@
 									'gestion_reduction'=>1,
 								//	'kcc'=>0, // to enable/disable Kings conference specific features
 									'xls_copy'=>1,
-									'all_company_info'=>1
+									'all_company_info'=>1,
+									'manual_bill_numbering'=>1 //on if user can use their own numbers for bills.
 								 )
 					); 
 	// setup for the options needed by the function that copies the journal money into the caisse

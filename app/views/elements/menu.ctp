@@ -234,8 +234,11 @@
 						<li class="rapport"><?php echo $this->Html->link(__('Paramétrage du logiciel', true), '/configs/index'); ?></li>
 						<li class="rapport"><?php echo $this->Html->link(__('Sauvergarder la base de données', true), '/configs/backup'); ?></li>
 						<?php if(in_array($session->read('Auth.Personnel.fonction_id'),array(3))):?>
-							<li class="rapport"><?php echo $this->Html->link(__('Restaurer la base de données', true), '/configs/restore_db'); ?></li>
+							<li class="rapport"><?php echo $this->Html->link(__('Importer la base de données', true), '/configs/restore_db'); ?></li>
 							<li class="rapport"><?php echo $this->Html->link(__('Réparer la base de données', true), '/configs/repair_all_tables'); ?>
+
+							<li class="rapport"><?php echo $this->Html->link(__('Effacer complétement la base de données', true), '/configs/reset_db/complete'); ?></li>
+							<li class="rapport"><?php echo $this->Html->link(__('Effacer juste les opérations dans base de données', true), '/configs/reset_db/partial'); ?></li>
 						<?php endif;?>
 						</li>
 					</ul>	
@@ -244,7 +247,6 @@
 					<ul>
 						<li class="group"><?php echo $this->Html->link(__('Gestion des Fonctions', true), '/fonctions/index'); ?></li>
 						<li class="personnel"><?php echo $this->Html->link(__('Gestion du Personnel', true), '/personnels/index'); ?></li>
-						<li class="folder"><?php echo $this->Html->link(__('Gestion des Salaires', true), '/salaires/index'); ?></li>
 						<li class="home_min"><?php echo $this->Html->link(__('Page d\'accueil', true), '/'); ?></li>
 					</ul>
 				</li>

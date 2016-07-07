@@ -1186,6 +1186,37 @@ function table_changer(factureId){
 	}
 }
 
+function bill_number_changer(factureId){
+    if(factureId!==0){
+        var numero=prompt('Numéro de la facture souhaitez : ');
+        
+        if(numero ===''|| numero === undefined || numero === null){
+            alert('Le numéro est obligatoire!');
+        }
+        else {
+            jQuery.ajax({
+                type:'POST',
+                url:getBase()+'ventes/setProposedBillNumber',
+                data:{'data[Vente][facture_numero]':numero,
+                        'data[Vente][facture_id]':factureId
+                    },
+                dataType:'json',
+                success:function(response){
+                    if(response.success){
+                        jQuery('table#list_factures tr[id="'+factureId+'"] td[id="num"]').text(numero);
+                    }
+                    else { 
+                        alert(response.msg);
+                    }
+                }
+            });
+        }
+    }
+    else {
+        alert('Sélectionné une facture !');
+    }
+}
+
 function mass_delete(){
 	var nom='checkbox';
 	var	info=jQuery('form[name="'+nom+'"]').attr('id');

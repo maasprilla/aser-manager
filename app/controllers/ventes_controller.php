@@ -1806,6 +1806,7 @@ class VentesController extends AppController {
 				}
 				$garnishList[0]='';
 			}
+
 			$this->set(compact('produits',
 								'personnels',
 								'factures',
@@ -2097,7 +2098,7 @@ class VentesController extends AppController {
 		}
 		return $journal;
 	}
-	function _checkMaxDette($reste,$tierInfo,$data){
+	function _checkMaxDette($tierInfo,$reste,$data){
 		//make sure we have a client/tier first.
 		$this->_checkTier($data); 
 
@@ -2105,7 +2106,8 @@ class VentesController extends AppController {
 			$sum=$this->Vente->Facture->find('all',array('fields'=>array('sum(Facture.reste) as reste'),
 													'conditions'=>array('Facture.tier_id'=>$data['tier_id'])
 													));
-			$totalCredit=(isset($sum[0]['Facture']['reste']))?$sum[0]['Facture']['reste']+$reste:0;										
+			$totalCredit=(isset($sum[0]['Facture']['reste'])) ? $sum[0]['Facture']['reste']+$reste:0;		
+
 			if($totalCredit>$tierInfo['max_dette']){
 				die(json_encode(array('success'=>false,
 									'msg'=>'La Dette maximale de '.$tierInfo['max_dette'].' est dépassée!'
@@ -2619,8 +2621,44 @@ class VentesController extends AppController {
 		if($returnReductionOnly) return $info['reduction'];
 		else return $info;
 	}
+
+	function setProposedBillNumber(){
+		if(!empty($this->data['Vente']['facture_numero'])){
+
+			$this->_checkBillNumberAvailability($this->data['Vente']['facture_numero']);
+			$this->Vente->Facture->id = $this->data['Vente']['facture_id'];
+			$this->Vente->Facture->saveField('numero',$this->data['Vente']['facture_numero']);
+			
+			exit(json_encode(array('success'=>true)));	
+		}
+		exit(json_encode(array('success'=>false, 'msg'=>'Le Numero est requis!')));
+	}
+
+
+	//check if the proposed bill number is already used
+	function _checkBillNumberAvailability($numero = null, $exit_on_failure=true){
+		if(Configure::read('aser.manual_bill_numbering')&&!empty($numero)){
+			$search = $this->Vente->Facture->find('first',array('fields'=>array("Facture.numero"),
+																							'conditions'=>array('Facture.numero'=>$numero)
+																	));
+			if(!empty($search['Facture']['numero'])){
+				if($exit_on_failure){
+					exit(json_encode(array('success'=>false,
+				'msg'=>'Le numéro de facture proposé : '.$numero.' est déjà pris! Veuillez choisir un autre.')));	
+				}
+				else {
+					return false;
+				}
+			}
+		}
+	}
 	
 	function _addCheckings(&$data){
+		
+		//stop if the proposed bill number is already used
+		if($data['Vente']['factureId']=='creation'){
+			$this->_checkBillNumberAvailability($data['Vente']['facture_numero']);
+		}
 		//stop add users from creating bills except caissiers and serveurs.
 		if(!in_array($this->Auth->user('fonction_id'),array(1,2))&&($data['Vente']['factureId']=='creation')){
 			exit(json_encode(array('success'=>false,
@@ -2686,6 +2724,7 @@ class VentesController extends AppController {
 
 		//basic checkings.
 		$this->_addCheckings($this->data);
+
 		//initializing some variables.
 		$failToSaveMsg="Fail to save this vente.";
 		//find the Point of sale we are working on.
@@ -2817,7 +2856,15 @@ class VentesController extends AppController {
 			if(!$this->Vente->Facture->save($facture)) exit(json_encode(array('success'=>false,'msg'=>"Vente Add F(x) : Fail to create the bill.")));
 			$factureId=$this->Vente->Facture->id;
 			//determining the facture's display number
-			$factureNum=$this->Product->facture_number($factureId,'Vente');
+			if(Configure::read('aser.manual_bill_numbering')&&!empty($this->data['Vente']['facture_numero'])) {
+				$facture['Facture']['numero'] = $factureNum = $this->data['Vente']['facture_numero'];
+				$facture['Facture']['id'] =$factureId;
+				$this->Vente->Facture->save($facture);
+			}
+			else {
+				$factureNum = $this->Product->facture_number($factureId,'Vente');
+			}
+
 			
 			//trace stuff
 			$trace['Trace']['model_id']=$factureId;

@@ -135,12 +135,16 @@
 			}
 			echo '<span id="resto_produits">'.$this->Form->input('produit_id',array('id'=>'produits')).'</span>';
 
+			if(Configure::read('aser.manual_bill_numbering')){
+				echo $this->Form->input('facture_numero',array('value'=>'', 'id'=>'facture_numero', 'label'=>"N° de la Facture"));
+			}
 			if(!$config['magasin']&&$config['bon']){
 			//	echo $this->Form->input('garnish',array('options'=>$garnishList,'selected'=>0,'label'=>'Accompagnements'));
 			}
 			if(!$config['magasin']){
 				echo $this->Form->input('table',array('value'=>0));
 			}
+
 			echo $this->Form->input('quantite',array('value'=>1,'label'=>'Quantité'));
 			if(Configure::read('aser.PU'))
 				echo $this->Form->input('PU',array('label'=>'Autre Prix Unitaire'));
@@ -269,10 +273,16 @@
 			<span id="serveur" name="disable" class="boutton" title="Changer le Serveur">Serveur</span>
 			<span id="table" name="disable" class="boutton" title="Changer la table">Table</span>
 		<?php endif;?> 
+		<?php if(Configure::read('aser.manual_bill_numbering')): ?>
+			<span id="change_bill_number" name="disable" class="boutton" title="Changer le numero de la facture">N° Facture</span>
+		<?php endif;?> 
 		<?php if(!$config['magasin']&&$config['bon']): ?>
 			<span class="boutton" onclick="ask(factureId)" title="Imprimer les bons pour le bar et la cuisine pour la facture sélectionnée">Bon</span>
 		<?php endif;?> 
+		<?php if(!Configure::read('aser.manual_bill_numbering')): ?>
 		<span id ="separator" name="disable" class="boutton" title="Séparer une facture en deux ou plus">Séparateur</span>
+		<?php endif;?> 
+
 		<?php if($config['client_auto_creation']): ?>
 			<span class="boutton" onclick="resto_tier()" title="Créer un nouveau client">Client</span>
 		<?php endif;?>

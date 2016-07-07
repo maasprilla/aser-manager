@@ -190,6 +190,7 @@ function binder(){
  	jQuery('span#paiement_facture_touch').unbind('click').bind('click',function(){paiement_touch(factureId)}).attr('class','boutton');
  	jQuery('span#direct_reduction').unbind('click').bind('click',function(){direct_reduction(factureId)}).attr('class','boutton');
  	jQuery('span#separator').unbind('click').bind('click',function(){separator(factureId)}).attr('class','boutton');
+  jQuery('span#change_bill_number').unbind('click').bind('click',function(){bill_number_changer(factureId)}).attr('class','boutton');
 }
 
 function serveur_changer(factureId){
@@ -945,6 +946,7 @@ function getBase(){
  	var employeur=jQuery('#VenteEmployeur').val();
  	
  	var PU='';
+  var facture_numero = null;
  	var clientId=null;
  	var client='';
  	var table=null;
@@ -957,6 +959,7 @@ function getBase(){
  		serveurId=jQuery('select#VentePersonnelId option:selected').val();
  		table=jQuery('#VenteTable').val();
  		PU=jQuery('#VentePU').val();
+    facture_numero=jQuery('#facture_numero').val();
  		var reduction=-1;
  		var beneficiaire=jQuery('#VenteBeneficiaire').val();
  	}
@@ -994,7 +997,8 @@ function getBase(){
 				'data[Vente][acc_id]':garnishId,
 				'data[Vente][matricule]':matricule,
 				'data[Vente][liasse]':liasse,
-				'data[Vente][employeur]':employeur
+				'data[Vente][employeur]':employeur,
+        'data[Vente][facture_numero]':facture_numero
 			},
 			dataType:'json',
 			success:function(r){

@@ -1421,7 +1421,7 @@ set_time_limit(240);    //4minutes
     	 // Set output Encoding.
     	$data->setOutputEncoding('CP1251');
 		if(!empty($this->data)) {
-    //	exit(debug($this->data));
+    	//exit(debug($this->data));
 			//emptying  tables
 		/*
 			$this->Produit->Section->query('truncate table sections');
@@ -1438,16 +1438,16 @@ set_time_limit(240);    //4minutes
     	//	die(debug($data->sheets[0]['cells']));
 			$i=0;
 			foreach($data->sheets[0]['cells'] as $row){
-				if($i>0&&(count($row)==5)){
+				if(count($row)>=7){
 						// exit(debug($row));
 					$produit['section_id']=$this->_section($row[1]);
 					$produit['groupe_id']=$this->_groupe($produit['section_id'],$row[2]);
 					$produit['name']=$row[3];
-					$produit['PA']= (empty($row[4])) ? 0 : $row[4];
-					$produit['PV']=(empty($row[5])) ? 0 : $row[5];;
-					$produit['unite_id']=$this->_unite($row[6]);
-					$produit['type']=	$row[7];
-					$produit['description']=	$row[8];
+					$produit['PA']= (!empty($row[4])) ? round($row[4]) : 0;
+					$produit['PV']=(!empty($row[5])) ? round($row[5]) : 0;
+					$produit['unite_id']= (!empty($row[6])) ? $this->_unite($row[6]): $this->_unite("pièce");
+					$produit['type']=	(!empty($row[7])) ? $row[7]: 'non_stockable';
+					$produit['description']=	(!empty($row[8])) ? $row[8]: '';
 					$this->Produit->save(array('Produit'=>$produit));
 					unset($this->Produit->id);
 				}

@@ -1,6 +1,58 @@
 <?php
 class ConfigsController extends AppController {
 	
+	function reset_db($type='partial'){
+		$userId=$this->Auth->user('id');
+		if($userId!=11) {
+			$this->Session->setFlash('Seul Armand peut effectué la réinitialisation');
+			$this->redirect('/');
+		}
+
+		$config_tables = ['produits','groupes','sections','stocks','tiers','chambres','type_chambres','type_services','salles','unites','caisses','types','tarifs'];
+		$operation_tables = [
+												'reductions',
+												'ventes',
+												'vente_effaces',
+												'order_details',
+												'orders',
+												'paiements',
+												'services',
+												'location_extras',
+												'locations',
+												'reservations',
+												'entrees',
+												'sortis',
+												'pertes',
+												'mouvements',
+												'historiques',
+												'traces',
+												'caisse_interdites',
+												'operations',
+												'ingredients',
+												'limits',
+												'tarifs',
+												'factures',
+												'journals',
+												];
+
+		$this->loadModel('Produit');
+		if($type == 'complete'){
+			$tables =  array_merge($operation_tables, $config_tables);
+			$this->Produit->query("delete from personnels where id != 11");
+		}
+		else {
+			$tables = $operation_tables;
+		}
+		$this->loadModel('Produit');
+		// exit(debug($tables));
+		foreach ($tables as $table) {
+			$this->Produit->query("delete from $table");
+		}
+
+		$this->Session->setFlash('Opération effectuée');
+		$this->redirect('/');
+	}
+
 	function repair_all_tables(){
 		$this->autoRender=false;
 		$db = ConnectionManager::getDataSource('default');
